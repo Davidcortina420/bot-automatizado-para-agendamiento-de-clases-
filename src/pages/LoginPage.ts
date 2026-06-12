@@ -45,7 +45,6 @@ async login(username: string, password: string) {
   await this.page.click(this.confirmButton);
 
   // Espera fija — la página usa AJAX, no navegación tradicional
-  await this.page.waitForTimeout(4000);
   console.log('✅ Login exitoso — URL actual:', this.page.url());
 }
 

@@ -16,6 +16,20 @@ export class AgendarPage {
     this.page = page;
   }
 
+private async seleccionarClasePorNombre(iframe: Frame, nombreClase: string) {
+  const numero = nombreClase.replace(/[^0-9]/g, '');
+  const textoBusqueda = `CLASE ${numero}`;
+  
+  console.log(`📚 Buscando: "${textoBusqueda}"...`);
+
+  const clase = iframe
+    .locator('td[data-colindex="5"] span.ReadonlyAttribute')
+    .filter({ hasText: textoBusqueda });
+
+  await clase.waitFor({ state: 'visible', timeout: 10000 });
+  await clase.click();
+  console.log(`✅ Clase "${textoBusqueda}" seleccionada`);
+}
   private async getIframeModal(): Promise<Frame> {
   const iframeElement = await this.page.waitForSelector(this.iframeModal, { timeout: 10000 });
   const iframe = await iframeElement.contentFrame();
@@ -43,13 +57,12 @@ export class AgendarPage {
     console.log('✅ Filtro aplicado');
   }
 
-  async seleccionarClase() {
-    console.log('📚 Seleccionando clase...');
-    const iframe = await this.getIframe();
-    await iframe.waitForSelector(this.claseSelector, { timeout: 10000 });
-    await iframe.click(this.claseSelector);
-    console.log('✅ Clase seleccionada');
-  }
+async seleccionarClase(variableNumeroDeClase: string) {
+  console.log('📚 Seleccionando clase...');
+  const iframe = await this.getIframe();
+  await this.seleccionarClasePorNombre(iframe, variableNumeroDeClase);
+  console.log('✅ Clase seleccionada');
+}
 
 async clickProgramar() {
   console.log('🖱️  Abriendo modal de programación...');
@@ -74,15 +87,13 @@ async seleccionarFecha() {
   await iframe.waitForSelector('#vDIA', { timeout: 10000 });
   await iframe.selectOption('#vDIA', { index: 1 });
   console.log('✅ Fecha seleccionada');
-  await this.seleccionarHora();
 }
 
-async seleccionarHora() {
-  console.log('⏰ Seleccionando hora 4:30...');
+async seleccionarHora(horaXpath: string) {
+  console.log('⏰ Seleccionando hora...');
   const iframe = await this.getIframeModal();
-  await iframe.waitForSelector(this.selectHora, { timeout: 10000 });
-  await iframe.click(this.selectHora);
-  await this.page.waitForTimeout(1000);
+  await iframe.waitForSelector(`xpath=${horaXpath}`, { timeout: 10000 });
+  await iframe.click(`xpath=${horaXpath}`);
   console.log('✅ Hora seleccionada');
 }
 
@@ -94,12 +105,16 @@ async confirmarClase() {
   console.log('🎉 Clase confirmada exitosamente');
 }
 
-async agendarClase(sede: number) {
+async agendarClase(sede: number, horaXpath: string,VariableClassName : string ) {
   await this.seleccionarFiltroEstado();
-  await this.seleccionarClase();
+  await this.seleccionarClase(VariableClassName);
   await this.clickProgramar();
   await this.seleccionarSede(sede);
   await this.seleccionarFecha();
+  await this.seleccionarHora(horaXpath);
   await this.confirmarClase();
+
+
+ 
 }
 }
