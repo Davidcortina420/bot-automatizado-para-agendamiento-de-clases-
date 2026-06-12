@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-"scripts": {
-  "start": "ts-node src/main.ts",
-  "test:login": "ts-node src/main.ts"
-},
+  "scripts": {
+    "start": "ts-node src/main.ts",
+    "agendar": "ts-node src/agendar.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

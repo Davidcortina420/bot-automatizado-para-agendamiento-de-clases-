@@ -7,9 +7,10 @@ export class AgendarPage {
   private readonly filtroEstado = '#vTPEAPROBO';
   private readonly claseSelector = '#span_vPRONOMPRO_0017';
   private readonly btnProgramar = 'xpath=/html/body/form/div[1]/div/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr/td[1]/input[1]';
-private readonly iframeModal = 'xpath=//*[@id="gxp1_b"]//iframe';
-  private readonly selectHora = 'xpath=/html/body/form/div[1]/div/table/tbody/tr/td/table/tbody/tr[5]/td/div/table/tbody/tr[1]/td[4]';
+  private readonly iframeModal = 'xpath=//*[@id="gxp1_b"]//iframe';
+  private readonly selectDia = 'xpath=//*[@id="vDIA"]/option[2]';  private readonly selectHora = 'xpath=/html/body/form/div[1]/div/table/tbody/tr/td/table/tbody/tr[5]/td/div/table/tbody/tr[1]/td[4]';
   private readonly btnConfirmar = 'xpath=/html/body/form/div[1]/div/table/tbody/tr/td/table/tbody/tr[4]/td/input[1]';
+  private readonly selectSede = '#vREGCONREG';
 
   constructor(page: Page) {
     this.page = page;
@@ -60,7 +61,21 @@ async clickProgramar() {
   await this.page.waitForSelector('#gxp1_b', { state: 'visible', timeout: 10000 });
   console.log('✅ Modal de programación abierto');
 }
+async seleccionarSede(numero: number) {
+  const iframe = await this.getIframeModal();
+  await iframe.waitForSelector(this.selectSede, { timeout: 10000 });
+  await iframe.selectOption(this.selectSede, { index: numero - 1 });
+  console.log(`✅ Sede seleccionada: opción ${numero}`);
+}
 
+async seleccionarFecha() {
+  console.log('📅 Seleccionando fecha (día siguiente)...');
+  const iframe = await this.getIframeModal();
+  await iframe.waitForSelector('#vDIA', { timeout: 10000 });
+  await iframe.selectOption('#vDIA', { index: 1 });
+  console.log('✅ Fecha seleccionada');
+  await this.seleccionarHora();
+}
 
 async seleccionarHora() {
   console.log('⏰ Seleccionando hora 4:30...');
@@ -79,12 +94,12 @@ async confirmarClase() {
   console.log('🎉 Clase confirmada exitosamente');
 }
 
-  async agendarClase() {
-    await this.seleccionarFiltroEstado();
-    await this.seleccionarClase();
-    await this.clickProgramar();
-
-    await this.seleccionarHora();
-    await this.confirmarClase();
-  }
+async agendarClase(sede: number) {
+  await this.seleccionarFiltroEstado();
+  await this.seleccionarClase();
+  await this.clickProgramar();
+  await this.seleccionarSede(sede);
+  await this.seleccionarFecha();
+  await this.confirmarClase();
+}
 }
