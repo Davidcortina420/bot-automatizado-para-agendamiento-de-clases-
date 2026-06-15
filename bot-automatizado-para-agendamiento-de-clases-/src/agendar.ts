@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import { ejecutarBot } from './main';
+import { preguntarInicio } from './bot/telegram';
+import { bot } from './bot/telegram';
 
-ejecutarBot();
+bot.launch();
+preguntarInicio();

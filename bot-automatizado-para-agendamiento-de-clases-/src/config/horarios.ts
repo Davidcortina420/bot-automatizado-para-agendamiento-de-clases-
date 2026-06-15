@@ -13,15 +13,16 @@ export const HORARIOS_SABADO: Record<number, Horario> = {
 };
 
 export const HORARIOS_SEMANA: Record<number, Horario> = {
-  1: { label: '6:00 AM',  xpath: '' },
-  2: { label: '7:30 AM',  xpath: '' },
-  3: { label: '9:00 AM',  xpath: '' },
-  4: { label: '10:30 AM', xpath: '' },
-  5: { label: '12:00 PM', xpath: '' },
-  6: { label: '1:30 PM',  xpath: '' },
-  7: { label: '3:00 PM',  xpath: '' },
-  8: { label: '4:30 PM',  xpath: '' },
-  9: { label: '6:00 PM',  xpath: '' }
+  1: { label: '6:00 AM',  xpath: '//*[@id="span_HORSEDHIN_0001"]' },
+  2: { label: '7:30 AM',  xpath: '//*[@id="span_HORSEDHIN_0002"]' },
+  3: { label: '9:00 AM',  xpath: '//*[@id="span_HORSEDHIN_0003"]' },
+  4: { label: '10:30 AM', xpath: '//*[@id="span_HORSEDHIN_0004"]' },
+  5: { label: '12:00 PM', xpath: '//*[@id="span_HORSEDHIN_0005"]' },
+  6: { label: '1:30 PM',  xpath: '//*[@id="span_HORSEDHIN_0006"]' },
+  7: { label: '3:00 PM',  xpath: '//*[@id="span_HORSEDHIN_0007"]' },
+  8: { label: '4:30 PM',  xpath: '//*[@id="span_HORSEDHIN_0008"]' },
+  9: { label: '6:00 PM',  xpath: '//*[@id="span_HORSEDHIN_0009"]' },
+  10: { label: '7:30 PM',  xpath: '//*[@id="Grid1ContainerRow_0010"]/td[3]' },
 };
 
 export function getHorarioDelDia(): Record<number, Horario> {
